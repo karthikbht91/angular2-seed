@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
-import { Employee } from '../models/Employee.model'
+import { Employee } from '../models/Employee.model';
+import { NgForm } from '@angular/forms';
+import { FormProductService } from '../services/form-product-service'
+
 @Component({
   selector: 'home',
   styleUrls: ['./home.component.css'],
@@ -10,8 +13,8 @@ export class HomeComponent {
   model = new Employee('', '', true, '', 'default');
   isPrimaryLanguageNull: boolean = false;
 
-  validatePrimaryLanguage(event){
-    if(this.model.primaryLanguage === "default"){
+  validatePrimaryLanguage(value){
+    if(value === "default"){
       this.isPrimaryLanguageNull = true;
     }
     else{
@@ -19,6 +22,18 @@ export class HomeComponent {
     }
   }
   
+  constructor(private formPost: FormProductService){
+
+  }
+  submitForm(form: NgForm){
+    this.validatePrimaryLanguage(this.model.primaryLanguage);
+    if(this.isPrimaryLanguageNull){
+      return;
+    }
+    this.formPost.postForm(this.model);
+    console.log(form);
+
+  }
   //can be set/ reset using set and get acessors
   // _firstName: string = " ";
   // get firstName(): string{

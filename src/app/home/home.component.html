@@ -1,23 +1,30 @@
 <div class="container">
     <h3> RWMT - HMI </h3>
     <form #form="ngForm"
-          novalidate>
-        <!-- <div class="form-group" [class.valid] = "firstNamed.touched  && firstNamed.dirty && firstNamed.invalid">
-            <label class="col-form-label">First Name</label>
-            <input #firstNamed = "ngModel" class="form-control"
+          novalidate (submit) = 'submitForm(form)'>
+        <div class="form-group" [class.has-error] = "firstName.touched  && firstName.dirty && firstName.invalid">
+            <label class="form-label">First Name</label>
+            <input #firstName = "ngModel" class="form-control"
                    type="text"
                    name="firstNamed"
                    [(ngModel)] = 'model.firstNm' required maxlength="3">
-            <h5 *ngIf = 'firstName'> 'Hi {{ firstName }} :-)'</h5>
-        </div> -->
-        <!-- <div class="form-group">
-            <label>Last Name</label>
-            <input type="text"
-                   class="form-control"
-                   name="lastName"
-                   placeholder="Last Name"
-                   [(ngModel)] = "model.lastNm">
         </div>
+        <div
+        *ngIf = "firstName.touched  && firstName.dirty && firstName.invalid" class="alert alert-danger" role="alert">
+            First Name is a required field
+          </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input #lastName = 'ngModel' type="text"
+                   class="form-control"
+                   name="lastNamed"
+                   placeholder="Last Name"
+                   [(ngModel)] = "model.lastNm" required>
+        </div>
+        <div
+        *ngIf = "lastName.touched  && lastName.dirty && lastName.invalid" class="alert alert-danger" role="alert">
+            Last Name is a required field
+          </div>
         <div class="checkbox">
             <label>
                 <input type="checkbox"
@@ -45,19 +52,17 @@
                        value="1099">
                         1099
             </label>
-        </div> -->
-        <div class="form-group" [class.has-error] = "model.isPrimaryLanguageNull">
+        </div>
+        <div class="form-group" [class.has-error] = "isPrimaryLanguageNull">
             <label class="control-label"> Primary Languages</label>
-            <select class="form-control" name = "primaryLanguage"  [(ngModel)] = "model.primaryLanguage"
-            (blur) = "validatePrimaryLanguage()">
+            <select class="form-control" #primaryLanguage name = "primaryLanguage"  [(ngModel)] = "model.primaryLanguage"
+            (blur) = "validatePrimaryLanguage(primaryLanguage)"
+            (change) = "validatePrimaryLanguage(primaryLanguage.value)">
                 <option value = "default">Select a Language</option>
                 <option *ngFor="let lang of languagesList">{{lang}} </option>
             </select>
         </div> 
-        <!-- <div
-        *ngIf = "firstNamed.touched  && firstNamed.dirty && firstNamed.invalid" class="alert alert-danger" role="alert">
-            First Name is a required field
-          </div> -->
+        
 
         <button class="btn btn-primary"
                 type="submit">OK</button>
